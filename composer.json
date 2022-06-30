@@ -1,0 +1,26 @@
+{
+    "name": "mkaverin/unhasher",
+    "authors": [
+        {
+            "name": "Michael",
+            "email": "m@kaverin.ml"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Unhasher\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Unhasher\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=7.4.0",
+        "psr/log": "^1.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    }
+}
