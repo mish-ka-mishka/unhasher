@@ -44,7 +44,7 @@ class Unhasher implements LoggerAwareInterface
             $guess = str_pad($i, $haveToGuessDigits, '0', STR_PAD_LEFT);
             $cardNumber = $firstDigits . $guess . $lastDigits;
 
-            if (!LuhnChecker::check($cardNumber)) {
+            if (! LuhnChecker::check($cardNumber)) {
                 continue;
             }
 

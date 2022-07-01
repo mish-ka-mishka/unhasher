@@ -16,7 +16,7 @@ class LuhnChecker
 
     public static function generateChecksum(string $numeric): string
     {
-        if (!is_numeric($numeric)) {
+        if (! is_numeric($numeric)) {
             throw new InvalidArgumentException('$numeric is not numeric');
         }
 

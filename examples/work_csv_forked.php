@@ -1,7 +1,7 @@
 <?php
 
-use Unhasher\HashComparators\MaskedComparator;
 use Unhasher\EchoLogger;
+use Unhasher\HashComparators\MaskedComparator;
 use Unhasher\Unhasher;
 
 require '../vendor/autoload.php';
@@ -31,7 +31,7 @@ $forksNumber = 10;
 
 
 $rowsNumber = 0;
-while (!$input->eof()) {
+while (! $input->eof()) {
     $rowsNumber++;
     $input->fgets();
 }
@@ -89,7 +89,7 @@ if ($pid === 0) {
     $input->seek($min);
     $i = $min;
 
-    while (!$input->eof() && $i <= $max) {
+    while (! $input->eof() && $i <= $max) {
         $i++;
 
         $row = $input->fgetcsv();

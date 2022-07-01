@@ -1,7 +1,7 @@
 <?php
 
-use Unhasher\HashComparators\MaskedComparator;
 use Unhasher\EchoLogger;
+use Unhasher\HashComparators\MaskedComparator;
 use Unhasher\Unhasher;
 
 require '../vendor/autoload.php';
@@ -33,7 +33,7 @@ array_splice($header, $hashIndex, 0, 'PAN');
 
 $output->fputcsv($header);
 
-while (!$input->eof()) {
+while (! $input->eof()) {
     $row = $input->fgetcsv();
 
     if (empty($row[$hashIndex])) {
