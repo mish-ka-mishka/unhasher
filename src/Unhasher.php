@@ -2,12 +2,13 @@
 
 namespace Unhasher;
 
+use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Unhasher\HashComparators\ExactComparator;
 use Unhasher\HashComparators\HashComparatorInterface;
 
-class Unhasher
+class Unhasher implements LoggerAwareInterface
 {
     private $hashFunction;
     private int $cardNumberLength;
@@ -64,9 +65,19 @@ class Unhasher
         return call_user_func($this->hashFunction, $cardNumber);
     }
 
+    public function getHashComparator(): HashComparatorInterface
+    {
+        return $this->hashComparator;
+    }
+
     public function setHashComparator(HashComparatorInterface $hashComparator): void
     {
         $this->hashComparator = $hashComparator;
+    }
+
+    public function getLogger(): LoggerInterface
+    {
+        return $this->logger;
     }
 
     public function setLogger(LoggerInterface $logger): void

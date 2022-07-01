@@ -18,6 +18,9 @@ $unhasher = new Unhasher(
 );
 
 
+file_put_contents('output.csv', '');
+
+
 $input = new SplFileObject('input.csv');
 $output = new SplFileObject('output.csv', 'a');
 
@@ -32,6 +35,10 @@ $output->fputcsv($header);
 
 while (!$input->eof()) {
     $row = $input->fgetcsv();
+
+    if (empty($row[$hashIndex])) {
+        continue;
+    }
 
     $hash = $row[$hashIndex];
     $lastDigits = $row[$lastDigitsIndex];
