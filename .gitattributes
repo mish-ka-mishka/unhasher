@@ -13,3 +13,4 @@
 /psalm.xml              export-ignore
 /psalm.xml.dist         export-ignore
 /tests                  export-ignore
+/examples               export-ignore
