@@ -12,6 +12,8 @@ class EchoLogger extends AbstractLogger
             return;
         }
 
-        echo '[' . $level . '] ' . $message . PHP_EOL;
+        $datetime = date('Y-m-d H:i:s');
+
+        echo '[' . $datetime . ' ' . $level . '] ' . $message . PHP_EOL;
     }
 }

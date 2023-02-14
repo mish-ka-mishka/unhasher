@@ -12,7 +12,11 @@ class MaskedComparator implements HashComparatorInterface
             return true;
         }
 
-        $exploded = array_values(array_filter(explode('*', $mask)));
+        $exploded = array_values(
+            array_filter(
+                explode('*', $mask)
+            )
+        );
 
         if (count($exploded) === 2) {
             $start = $exploded[0];
