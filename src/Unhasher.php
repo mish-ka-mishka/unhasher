@@ -3,6 +3,7 @@
 namespace Unhasher;
 
 use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Unhasher\HashComparators\ExactComparator;
@@ -10,11 +11,14 @@ use Unhasher\HashComparators\HashComparatorInterface;
 
 class Unhasher implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     private $hashFunction;
     private int $cardNumberLength;
 
+    private array $suggestedPans = [];
+
     private HashComparatorInterface $hashComparator;
-    private LoggerInterface $logger;
 
     public function __construct(
         callable $hashFunction,
@@ -26,17 +30,36 @@ class Unhasher implements LoggerAwareInterface
         $this->cardNumberLength = $cardNumberLength;
 
         $this->hashComparator = $hashComparator ?? new ExactComparator();
-        $this->logger = $logger ?? new NullLogger();
+        $this->setLogger($logger ?? new NullLogger());
     }
 
-    public function unhash(string $hashMask, string $firstDigits, string $lastDigits): ?string
+    public function setSuggestedPans(array $suggestedPans): void
+    {
+        $this->suggestedPans = $suggestedPans;
+    }
+
+    public function unhash(string $hashMask, string $firstDigits = '', string $lastDigits = ''): ?string
     {
         $firstDigitsLength = strlen($firstDigits);
         $lastDigitsLength = strlen($lastDigits);
 
         $haveToGuessDigits = $this->cardNumberLength - $firstDigitsLength - $lastDigitsLength;
 
+        if ($haveToGuessDigits < 0) {
+            $this->logger->error('Card number length is less than first digits length and last digits length');
+            return null;
+        }
+
         $max = pow(10, $haveToGuessDigits) - 1;
+
+        $suggestedPansCount = count($this->suggestedPans);
+        foreach ($this->suggestedPans as $i => $suggestedPan) {
+            $this->logger->debug('Suggested pan ' . $i . ' / ' . $suggestedPansCount . ': ' . $suggestedPan);
+
+            if ($this->hashComparator->compare($this->hash($suggestedPan), $hashMask)) {
+                return $suggestedPan;
+            }
+        }
 
         for ($i = 0; $i <= $max; $i++) {
             $this->logger->debug($i . ' / ' . $max);
@@ -78,10 +101,5 @@ class Unhasher implements LoggerAwareInterface
     public function getLogger(): LoggerInterface
     {
         return $this->logger;
-    }
-
-    public function setLogger(LoggerInterface $logger): void
-    {
-        $this->logger = $logger;
     }
 }
