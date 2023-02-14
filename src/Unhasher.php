@@ -47,6 +47,7 @@ class Unhasher implements LoggerAwareInterface
 
         if ($haveToGuessDigits < 0) {
             $this->logger->error('Card number length is less than first digits length and last digits length');
+
             return null;
         }
 
