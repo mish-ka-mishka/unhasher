@@ -18,6 +18,8 @@ class Unhasher implements LoggerAwareInterface
 
     private array $suggestedPans = [];
 
+    private bool $useOnlySuggestedPans = false;
+
     private HashComparatorInterface $hashComparator;
 
     public function __construct(
@@ -62,6 +64,12 @@ class Unhasher implements LoggerAwareInterface
             }
         }
 
+        if ($this->useOnlySuggestedPans) {
+            $this->logger->error($hashMask . ' not found in suggested pans');
+
+            return null;
+        }
+
         for ($i = 0; $i <= $max; $i++) {
             $this->logger->debug($i . ' / ' . $max);
 
@@ -102,5 +110,10 @@ class Unhasher implements LoggerAwareInterface
     public function getLogger(): LoggerInterface
     {
         return $this->logger;
+    }
+
+    public function useOnlySuggestedPans(bool $useOnlySuggestedPans = true): void
+    {
+        $this->useOnlySuggestedPans = $useOnlySuggestedPans;
     }
 }
